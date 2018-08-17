@@ -269,7 +269,7 @@
   "status.pinned": "固定されたトゥート",
   "status.reblog": "ブースト",
   "status.reblog_private": "ブースト",
-  "status.reblogged_by": "{name}さんがブースト",
+  "status.reblogged_by": "{date}に{name}さんがブースト",
   "status.redraft": "削除して下書きに戻す",
   "status.reply": "返信",
   "status.replyAll": "全員に返信",
