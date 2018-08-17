@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import StatusContainer from '../../../containers/status_container';
 import AccountContainer from '../../../containers/account_container';
+import RelativeTimestamp from '../../../components/relative_timestamp';
 import { FormattedMessage } from 'react-intl';
 import Permalink from '../../../components/permalink';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -65,7 +66,7 @@ export default class Notification extends ImmutablePureComponent {
     };
   }
 
-  renderFollow (account, link) {
+  renderFollow (account, link, date) {
     return (
       <HotKeys handlers={this.getHandlers()}>
         <div className='notification notification-follow focusable' tabIndex='0'>
@@ -74,7 +75,7 @@ export default class Notification extends ImmutablePureComponent {
               <i className='fa fa-fw fa-user-plus' />
             </div>
 
-            <FormattedMessage id='notification.follow' defaultMessage='{name} followed you' values={{ name: link }} />
+            <FormattedMessage id='notification.follow' defaultMessage='{name} followed you' values={{ name: link, date: date }} />
           </div>
 
           <AccountContainer id={account.get('id')} withNote={false} hidden={this.props.hidden} />
@@ -96,7 +97,7 @@ export default class Notification extends ImmutablePureComponent {
     );
   }
 
-  renderFavourite (notification, link) {
+  renderFavourite (notification, link, date) {
     return (
       <HotKeys handlers={this.getHandlers()}>
         <div className='notification notification-favourite focusable' tabIndex='0'>
@@ -104,7 +105,7 @@ export default class Notification extends ImmutablePureComponent {
             <div className='notification__favourite-icon-wrapper'>
               <i className='fa fa-fw fa-star star-icon' />
             </div>
-            <FormattedMessage id='notification.favourite' defaultMessage='{name} favourited your status' values={{ name: link }} />
+            <FormattedMessage id='notification.favourite' defaultMessage='{name} favourited your status' values={{ name: link, date: date }} />
           </div>
 
           <StatusContainer id={notification.get('status')} account={notification.get('account')} muted withDismiss hidden={!!this.props.hidden} />
@@ -113,7 +114,7 @@ export default class Notification extends ImmutablePureComponent {
     );
   }
 
-  renderReblog (notification, link) {
+  renderReblog (notification, link, date) {
     return (
       <HotKeys handlers={this.getHandlers()}>
         <div className='notification notification-reblog focusable' tabIndex='0'>
@@ -121,7 +122,7 @@ export default class Notification extends ImmutablePureComponent {
             <div className='notification__favourite-icon-wrapper'>
               <i className='fa fa-fw fa-retweet' />
             </div>
-            <FormattedMessage id='notification.reblog' defaultMessage='{name} boosted your status' values={{ name: link }} />
+            <FormattedMessage id='notification.reblog' defaultMessage='{name} boosted your status' values={{ name: link, date: date }} />
           </div>
 
           <StatusContainer id={notification.get('status')} account={notification.get('account')} muted withDismiss hidden={this.props.hidden} />
@@ -135,16 +136,17 @@ export default class Notification extends ImmutablePureComponent {
     const account          = notification.get('account');
     const displayNameHtml  = { __html: account.get('display_name_html') };
     const link             = <bdi><Permalink className='notification__display-name' href={account.get('url')} title={account.get('acct')} to={`/accounts/${account.get('id')}`} dangerouslySetInnerHTML={displayNameHtml} /></bdi>;
+    const date             = <RelativeTimestamp timestamp={notification.get('created_at')} />
 
     switch(notification.get('type')) {
     case 'follow':
-      return this.renderFollow(account, link);
+      return this.renderFollow(account, link, date);
     case 'mention':
       return this.renderMention(notification);
     case 'favourite':
-      return this.renderFavourite(notification, link);
+      return this.renderFavourite(notification, link, date);
     case 'reblog':
-      return this.renderReblog(notification, link);
+      return this.renderReblog(notification, link, date);
     }
 
     return null;
