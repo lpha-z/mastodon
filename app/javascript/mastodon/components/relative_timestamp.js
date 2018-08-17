@@ -138,7 +138,7 @@ export default class RelativeTimestamp extends React.Component {
         relativeTime = intl.formatMessage(messages.minutes, { number: Math.floor(delta / MINUTE)});
         absoluteTime = intl.formatDate(date, { hour: '2-digit', minute: '2-digit' });
       } else if (delta < DAY) {
-        relativeTime = intl.formatMessage(messages.hours, { number: Math.floor(delta / HOUR)});
+        relativeTime = intl.formatMessage(messages.hours, { number: Math.floor(delta / HOUR), number2: Math.floor(delta / MINUTE) - HOUR / MINUTE * Math.floor(delta / HOUR) });
         absoluteTime = intl.formatDate(date, { hour: '2-digit', minute: '2-digit' });
       } else {
         relativeTime = intl.formatMessage(messages.days, { number: Math.floor(delta / DAY) });
