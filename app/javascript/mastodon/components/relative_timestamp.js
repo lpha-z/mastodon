@@ -125,18 +125,24 @@ export default class RelativeTimestamp extends React.Component {
     const delta = this.state.now - date.getTime();
 
     let relativeTime;
+    let absoluteTime;
 
     if (delta < 10 * SECOND) {
       relativeTime = intl.formatMessage(messages.just_now);
+      absoluteTime = intl.formatDate(date, { hour: '2-digit', minute: '2-digit' });
     } else if (delta < 7 * DAY) {
       if (delta < MINUTE) {
         relativeTime = intl.formatMessage(messages.seconds, { number: Math.floor(delta / SECOND) });
+        absoluteTime = intl.formatDate(date, { hour: '2-digit', minute: '2-digit' });
       } else if (delta < HOUR) {
-        relativeTime = intl.formatMessage(messages.minutes, { number: Math.floor(delta / MINUTE) });
+        relativeTime = intl.formatMessage(messages.minutes, { number: Math.floor(delta / MINUTE)});
+        absoluteTime = intl.formatDate(date, { hour: '2-digit', minute: '2-digit' });
       } else if (delta < DAY) {
-        relativeTime = intl.formatMessage(messages.hours, { number: Math.floor(delta / HOUR) });
+        relativeTime = intl.formatMessage(messages.hours, { number: Math.floor(delta / HOUR)});
+        absoluteTime = intl.formatDate(date, { hour: '2-digit', minute: '2-digit' });
       } else {
         relativeTime = intl.formatMessage(messages.days, { number: Math.floor(delta / DAY) });
+        absoluteTime = intl.formatDate(date, { ...shortDateFormatOptions, hour: '2-digit', minute: '2-digit' });
       }
     } else if (date.getFullYear() === year) {
       relativeTime = intl.formatDate(date, shortDateFormatOptions);
@@ -146,7 +152,7 @@ export default class RelativeTimestamp extends React.Component {
 
     return (
       <time dateTime={timestamp} title={intl.formatDate(date, dateFormatOptions)}>
-        {relativeTime}
+        {absoluteTime}({relativeTime})
       </time>
     );
   }
