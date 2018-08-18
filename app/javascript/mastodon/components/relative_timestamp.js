@@ -52,7 +52,7 @@ const getUnitDelay = units => {
   case 'minute':
     return MINUTE;
   case 'hour':
-    return HOUR;
+    return MINUTE;
   case 'day':
     return DAY;
   default:
